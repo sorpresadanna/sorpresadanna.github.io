@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Happy Birthday Danna!</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+        .countdown {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Ocultar el contenido inicial */
+        }
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .mensaje-correcto {
+            color: green;
+        }
+        .mensaje-incorrecto {
+            color: red;
+        }
+        #imagenEnlace {
+            display: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        #imagenSorpresa {
+            display: none;
+            position: absolute;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .imagen-enlace-contenedor {
+        text-align: center;
+        margin-top: 20px; /* Espacio arriba de la imagen */
+        }
+        #imagenEnlace {
+        display: none;
+        cursor: pointer;
+        }
+        #mensaje {
+             max-width: 600px; /* Ajusta este valor según el ancho máximo que desees */
+             word-wrap: break-word;
+                line-height: 1.5;
+             margin: 20px auto 0; /* Centra el párrafo */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="countdown" id="countdown">
+        Tiempo restante: <span id="time"></span>
+    </div>
+
+    <div class="container" id="content">
+        <h1>Feliz Cumpleaños Mi Amor 💙</h1>
+        <h2>Ingresa el código secreto</h2>
+        <input type="text" id="codigoInput" placeholder="Ingresa tu código">
+        <button onclick="verificarCodigo()">Enviar</button>
+        <p id="mensaje"></p>
+        <img src="img/blueheart.gif" width="100" id="imagenEnlace" onclick="irAlEnlace()" alt="Haz clic aquí">
+    </div>
+    
+    <div class="imagen-enlace-contenedor">
+        <img src="img/corazonpng.png" width="100" id="imagenSorpresa" onclick="accionSorpresa()" alt="Haz clic aquí">
+    </div>
+
+    <script>
+        // Configura la fecha y hora del evento
+        const fechaEvento = new Date("August 28, 2024 00:00:00").getTime();
+
+        // Actualiza la cuenta regresiva cada segundo
+        const countdownInterval = setInterval(() => {
+            const ahora = new Date().getTime();
+            const diferencia = fechaEvento - ahora;
+
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+            document.getElementById("time").textContent = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+
+            // Cuando se llegue a la fecha y hora, mostrar el contenido y ocultar el contador
+            if (diferencia < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown").style.display = "none";
+                document.getElementById("content").style.display = "block";
+                mostrarImagenSorpresa();
+            }
+        }, 1000);
+
+        function verificarCodigo() {
+            const codigoIngresado = document.getElementById('codigoInput').value;
+            const mensaje = document.getElementById('mensaje');
+            const imagenEnlace = document.getElementById('imagenEnlace');
+
+            const mensajesError = [
+                "Talvez pueda ser una fecha?...",
+                "Ups, ese no es el código correcto.",
+                "Lo siento, el código ingresado no es válido.",
+                "¡Intenta de nuevo! Ese código no funciona.",
+                "¿Me pregunto cuanto sumaran nuestros cumpleaños?",
+                "Yo escribo las fechas asi 00.00.0000",
+                "Talvez un nombre?...",
+                "Quizas una frase?...",
+                "Algo que nos guste a alguno...",
+                "Suelo decirte que...",
+                "Mi amor de verdad no se te ocurre ninguno?",
+                "Te amo 💙",
+                "Talvez quieras ver algun regalo que te hice...",
+                "Si tan toxica, ¿cual es la contraseña de mi celular?",
+                "¿Como no me gusta que me llamen?",
+                "Sigue probando amor",
+                "Algo que te guste",
+                "Algo que suela decir",
+                "Piensa como yo lo haria",
+                "Aveces probar cosas tontas funciona...",
+                "Talvez mirar Google fotos te pueda ayudar...",
+                "Algo que siempre este haciendo"
+            ];
+
+            switch (codigoIngresado) {
+                case "te amo":
+                    mensaje.textContent = "Pues yo te amo muchisimo mas 💙💙";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "te odio":
+                    mensaje.textContent = "Yo tambien 💙";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "28.08.2023":
+                    mensaje.textContent = "Amor, recuerda que siempre que te encuentres mal puedes ver este video 💙 ,solo preciona el corazon";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'block';
+                    break;
+                case "arandanos":
+                    mensaje.textContent = "Nunca se me olvidaria tu comida favorita, se que te encantan, asi que si descubres este codigo, te voy a comprar los arandanos que quieras (Hay un limite mi amor) 💙.";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "31":
+                    mensaje.textContent = "Para mi tu siempre haz sido una persona demasiado importante para mi, mi mejor amiga, mi hermana, mi amor, mi vida, mi culona, y muchos nombres que te eh puesto desde que nos conocemos, y aunque para ti tu cumpleaños no signifique nada para ti, quiero que sepas que a mi si es una fecha de recordar, te amo y quiero que todos tus cumpleaños de ahora hacia delante, sean de tus dias favoritos, pasala muy bien, te amo, te adoro, cuidate mucho, te amo demasiado 💙.";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "23.03.2024":
+                    mensaje.textContent = "Yo me preocupo por ti todos los dias, te amo demasiado y no soportaria verte mal, por eso siempre quiero llevarte algo, ayudarte y estar pendiente de ti, y perdon si en algun momento, por mi preocupacion, te eh hecho enojar o incomodado, pero quiero que sepas que siempre estare aqui para ti, siempre que te duela algo, te sientas mal o tengas problemas, no importa cuanto tiempo pase, siempre voy a estar para ti mi amor 💙";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "culo":
+                    mensaje.textContent = "Amor, esto es un secreto, por favor no te vayas a enojar, pero la verdad es que si tienes un culazo que me gusta aunque tu digas que no tienes nada, la verdad es que yo si veo algo bastante grande JAJAJAJAJ perdoname mi amor.";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "tetas":
+                    mensaje.textContent = "¿Cuales si no tienes mi amor?";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "joder":
+                    mensaje.textContent = "Desde que te conozco eres de esas personas que irradian el ambiente con su presencia tan positiva y amigable, siempre jodiendo y molestando, aunque en algunos momentos sientas que pierdes esa luz, yo quiero ayudarte a que siempre este encendida, no te dejes llevar por malos momentos que apaguen tu luz, quiero ser tu compañero de juegos como de amor, nunca pares de SER TU MISMA. Te amo 💙";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "carlos":
+                    mensaje.textContent = "La verdad que durante toda mi vida poca por no decir que nadie aparte de mis papas me llaman carlos, y es algo que te eh contado, pero la verdad que tu me pudes llamar como tu quieras, ponquesito, mi amor, ponce, luis, carlos, impresora marca HP de tinta negra, mi corazon de melocoton, estupido, imbecil, y un monton de etc, que yo nunca te voy a decir nada JAJA, te quiero care verga. ";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "feliz cumpleaños":
+                    mensaje.innerHTML = '<a target="_blank" href="https://drive.google.com/file/d/1JuZLqKvi4dzk0rnCP9cuQK3HWQriiz0W/view?usp=sharing">Feliz Cumpleaños mi amor 💙💙💙 (dale click)</a>';
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "gracias":
+                    mensaje.innerHTML = '<a target="_blank" href="https://drive.google.com/file/d/19PCyHM5xAacPG8dlrDl-k_ckUZGygjbW/view?usp=sharing">Gracias, pero enserio, muchas gracias, gracias por siempre confiar en mi, por quedarte conmigo, gracias por todas las pequeñas cosas que haces, gracias, gracias por las vaces que no te agradezco, Muchas Gracias por todo 💙(dale click)</a>';
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "rizos":
+                    mensaje.innerHTML = '<a target="_blank" href="https://drive.google.com/file/d/1wKnPXIkqG7fjtynIbOuAb7uAQoKv7-jd/view?usp=sharing">Me encanta tu pelo, tu cara, tus labios, tus ojos, por favor, no cambies si? asi estas perfecta 💙. (dale click)</a>';
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "danna":
+                    mensaje.innerHTML = '<a target="_blank" href="https://drive.google.com/file/d/1fKur8uoPSGAvB8jDLx17Ox7I0pmkLbAe/view?usp=sharing">El nombre de mi persona favorita 💙. (dale click)</a>';
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "mi vida":
+                    mensaje.innerHTML = '<a target="_blank" href="https://drive.google.com/file/d/1z9je5WgNhXg82meEQhC4xGexArVl1XEm/view?usp=sharing">Eres el amor de mi vida, mi care verga 💙. (dale click)</a>';
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "109558":
+                    mensaje.textContent = "Oiga como se lo sabe no? Toxica de mierda";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "beso":
+                    mensaje.textContent = "Amor, ¿Te puedo dar un besito? 💙";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "ponce":
+                    mensaje.textContent = "Espero el dia que me puedas decir Amor frente a todos y nadie nos mire raro, pero ahora, somos Ponce y Danna, bueno mi amor?";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "03.08.2024":
+                    mensaje.innerHTML = '<a target="_blank" href="https://drive.google.com/file/d/1ZhsTaIS5NFFBz0vkNr-3moe7sdRYdi6V/view?usp=sharing">Y cuando pense que estaba pasando un mal dia, me recuerdas la razon por la que te amo, gracias por siempre acordarte de las cosas importantes para mi, y por siempre mostrarme tu amor incondicional, nadie se acuerda de esas cosas, pero tu eres la primera en hacermelo saber, gracias 💙. (dale click)</a>';
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                case "jugando":
+                    mensaje.textContent = "Una de mis cosas favoritas en mi vida siempre han sido los videojuegos, por mucho que cresca, no me paran de gustar como el primer dia, en ellos eh conocido muchusima gente, pero nadie como tu, los juegos me han hecho la persona que soy hoy en dia, realmente, sin ellos, no estaria hoy aqui, en ellos me eh refugiado en mis peores momentos, siempre han sido el lugar donde me desconecto del mundo, alla no tengo que buscarle un porque a las cosas, que hice mal, que puedo mejorar, alla puedo ser feliz sinceramente, asi que si te digo que estoy jugando, realmente, estoy siendo feliz, y tu eres la unica persona, por la que pararia de jugar para responderte. Te amo 💙";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                case "regalo":
+                    mensaje.textContent = "Siento que el mejor regalo que me pudo haber dado la vida fue haberte conocido en el momento y lugar necesario 💙.";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                case "cursi":
+                    mensaje.textContent = "Realmente piesno que esto es demasiado cursi amor, menos mal pasa una vez cada mucho tiempo AJJAJAJA";
+                    mensaje.className = 'mensaje-correcto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+                default:
+                    const mensajeAleatorio = mensajesError[Math.floor(Math.random() * mensajesError.length)];
+                    mensaje.textContent = mensajeAleatorio;
+                    mensaje.className = 'mensaje-incorrecto';
+                    imagenEnlace.style.display = 'none';
+                    break;
+            }
+        }
+
+        function irAlEnlace() {
+            window.open("https://drive.google.com/file/d/1KmxI44iXVB8KpJMI3pL8N8hjwQqB4yC6/view?usp=sharing", "_blank");
+        }
+
+        function mostrarImagenSorpresa() {
+            const imagen = document.getElementById('imagenSorpresa');
+            const maxWidth = window.innerWidth - 100; // 100 es el ancho de la imagen
+            const maxHeight = window.innerHeight - 100; // 100 es la altura de la imagen
+
+            const posicionX = Math.floor(Math.random() * maxWidth);
+            const posicionY = Math.floor(Math.random() * maxHeight);
+
+            imagen.style.left = `${posicionX}px`;
+            imagen.style.top = `${posicionY}px`;
+            imagen.style.display = 'block';
+
+            // Desvanecer la imagen
+            setTimeout(() => {
+                imagen.style.opacity = 1;
+            }, 180000); // Pequeño retraso para asegurar que la transición ocurra
+        }
+
+        function accionSorpresa() {
+            alert("Te amo muchismo 💙");
+            // Aquí puedes realizar cualquier otra acción que desees.
+        }
+    </script>
+</body>
+</html>
